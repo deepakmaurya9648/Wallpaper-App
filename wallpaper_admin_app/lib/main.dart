@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wallpaper_admin_app/provider/firebaseOperation.dart';
 import 'package:wallpaper_admin_app/provider/uploadImageProvider.dart';
 import 'package:wallpaper_admin_app/screens/homePageProvider.dart';
 import 'package:wallpaper_admin_app/screens/homeScreen.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => HomeHelper()),
         ChangeNotifierProvider(create: (_) => UploadImage()),
+        ChangeNotifierProvider(create: (_) => FirebaseOperation()),
       ],
     );
   }
