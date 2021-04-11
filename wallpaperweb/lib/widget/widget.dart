@@ -28,6 +28,7 @@ Widget brandName() {
             )
           ],
         );
+        //!--------------------mobile views--------------
       } else {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
