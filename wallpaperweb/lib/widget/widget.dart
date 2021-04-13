@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallpaperweb/model/image_model.dart';
+import 'package:wallpaperweb/views/image_views.dart';
 
 Widget brandName() {
   return LayoutBuilder(
@@ -57,18 +58,31 @@ Widget imageList({List<ImageModel> images, context}) {
     child: GridView.extent(
       physics: ClampingScrollPhysics(),
       shrinkWrap: true,
-      maxCrossAxisExtent: 350,
+      maxCrossAxisExtent: 150,
       childAspectRatio: 0.6,
       mainAxisSpacing: 3,
       crossAxisSpacing: 6,
       children: images.map((image) {
         return GridTile(
           child: Container(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                image.src.portrait,
-                fit: BoxFit.cover,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ImageView(
+                              imgUrl: image.src.portrait,
+                            )));
+              },
+              child: Hero(
+                tag: image.src.portrait,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    image.src.portrait,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           ),
