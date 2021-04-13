@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:wallpaperweb/data/data.dart';
 import 'package:wallpaperweb/model/category_model.dart';
+import 'package:wallpaperweb/model/image_model.dart';
 import 'package:wallpaperweb/widget/widget.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,9 +13,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String apiKey = "563492ad6f9170000100000122e030dd392345858e56327c25a5d83f";
   List<CategoryModel> category = [];
+  List<ImageModel> images = <ImageModel>[];
+  bool _loading;
+  getTrandingImages() async {
+    var response = await http.get(
+        Uri.parse('https://api.pexels.com/v1/curated?per_page=100'),
+        headers: {"Authorization": apiKey});
+    Map<String, dynamic> jsonData = jsonDecode(response.body);
+    jsonData["photos"].forEach((element) {
+      ImageModel imageModel = new ImageModel();
+      imageModel = ImageModel.fromMap(element);
+      images.add(imageModel);
+    });
+    setState(() {});
+  }
+
   @override
   void initState() {
+    getTrandingImages();
     category = getCategory();
     super.initState();
   }
@@ -70,7 +91,11 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-            )
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Expanded(child: imageList(images: images, context: context))
           ],
         ),
       ),
@@ -98,10 +123,11 @@ class CategoryTile extends StatelessWidget {
                 fit: BoxFit.cover,
               )),
           Container(
-            color: Colors.black26,
             height: MediaQuery.of(context).size.height * .1,
             width: MediaQuery.of(context).size.width * 0.2,
             alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Colors.black26, borderRadius: BorderRadius.circular(8)),
             child: Text(
               title,
               style: TextStyle(color: Colors.white),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallpaperweb/model/image_model.dart';
 
 Widget brandName() {
   return LayoutBuilder(
@@ -47,5 +48,28 @@ Widget brandName() {
         );
       }
     },
+  );
+}
+
+Widget imageList({List<ImageModel> images, context}) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 20),
+    child: GridView.extent(
+      physics: ClampingScrollPhysics(),
+      shrinkWrap: true,
+      maxCrossAxisExtent: 350,
+      childAspectRatio: 0.6,
+      mainAxisSpacing: 3,
+      crossAxisSpacing: 6,
+      children: images.map((image) {
+        return GridTile(
+          child: Container(
+            child: Image.network(
+              image.src.portrait,
+            ),
+          ),
+        );
+      }).toList(),
+    ),
   );
 }

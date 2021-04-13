@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wallpaperweb/provider/providerClass.dart';
 import 'package:wallpaperweb/views/home.dart';
 
 void main() {
