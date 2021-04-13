@@ -64,8 +64,12 @@ Widget imageList({List<ImageModel> images, context}) {
       children: images.map((image) {
         return GridTile(
           child: Container(
-            child: Image.network(
-              image.src.portrait,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                image.src.portrait,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         );

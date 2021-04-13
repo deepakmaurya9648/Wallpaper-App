@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:wallpaperweb/data/data.dart';
 import 'package:wallpaperweb/model/category_model.dart';
 import 'package:wallpaperweb/model/image_model.dart';
+import 'package:wallpaperweb/views/category.dart';
+import 'package:wallpaperweb/views/search.dart';
 import 'package:wallpaperweb/widget/widget.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,10 +15,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController seach = TextEditingController();
   String apiKey = "563492ad6f9170000100000122e030dd392345858e56327c25a5d83f";
   List<CategoryModel> category = [];
   List<ImageModel> images = <ImageModel>[];
-  bool _loading;
+
   getTrandingImages() async {
     var response = await http.get(
         Uri.parse('https://api.pexels.com/v1/curated?per_page=100'),
@@ -62,13 +65,23 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: seach,
                           style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                               hintText: 'search wallpaper',
                               border: InputBorder.none),
                         ),
                       ),
-                      Icon(Icons.search)
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchPage(
+                                          searchQuery: seach.text,
+                                        )));
+                          },
+                          child: Icon(Icons.search))
                     ],
                   ),
                 ),
@@ -93,7 +106,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(
-              height: 16,
+              height: 10,
             ),
             Expanded(child: imageList(images: images, context: context))
           ],
@@ -110,30 +123,41 @@ class CategoryTile extends StatelessWidget {
   const CategoryTile({@required this.imageUrl, @required this.title});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
-      child: Stack(
-        children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                imageUrl,
-                height: MediaQuery.of(context).size.height * .1,
-                width: MediaQuery.of(context).size.width * 0.2,
-                fit: BoxFit.cover,
-              )),
-          Container(
-            height: MediaQuery.of(context).size.height * .1,
-            width: MediaQuery.of(context).size.width * 0.2,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Colors.black26, borderRadius: BorderRadius.circular(8)),
-            child: Text(
-              title,
-              style: TextStyle(color: Colors.white),
-            ),
-          )
-        ],
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CategoryPage(
+                      categoryName: title.toLowerCase(),
+                    )));
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 8),
+        child: Stack(
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  imageUrl,
+                  height: MediaQuery.of(context).size.height * .1,
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  fit: BoxFit.cover,
+                )),
+            Container(
+              height: MediaQuery.of(context).size.height * .1,
+              width: MediaQuery.of(context).size.width * 0.2,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(8)),
+              child: Text(
+                title,
+                style: TextStyle(color: Colors.white),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
