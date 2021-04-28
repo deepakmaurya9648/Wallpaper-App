@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 10),
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
@@ -65,6 +65,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Expanded(
                         child: TextField(
+                          autofocus: false,
                           controller: seach,
                           style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
@@ -74,14 +75,19 @@ class _HomePageState extends State<HomePage> {
                       ),
                       InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchPage(
-                                          searchQuery: seach.text,
-                                        )));
+                            if (seach.text != null) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchPage(
+                                            searchQuery: seach.text,
+                                          )));
+                            }
                           },
-                          child: Icon(Icons.search))
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.blue,
+                          ))
                     ],
                   ),
                 ),

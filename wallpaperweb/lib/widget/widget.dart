@@ -53,41 +53,85 @@ Widget brandName() {
 }
 
 Widget imageList({List<ImageModel> images, context}) {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: 20),
-    child: GridView.extent(
-      physics: ClampingScrollPhysics(),
-      shrinkWrap: true,
-      maxCrossAxisExtent: 150,
-      childAspectRatio: 0.6,
-      mainAxisSpacing: 3,
-      crossAxisSpacing: 6,
-      children: images.map((image) {
-        return GridTile(
-          child: Container(
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ImageView(
-                              imgUrl: image.src.portrait,
-                            )));
-              },
-              child: Hero(
-                tag: image.src.portrait,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    image.src.portrait,
-                    fit: BoxFit.cover,
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      if (constraints.maxWidth > 1200) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: GridView.count(
+            physics: ClampingScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 4,
+            childAspectRatio: 0.6,
+            mainAxisSpacing: 3,
+            crossAxisSpacing: 6,
+            children: images.map((image) {
+              return GridTile(
+                child: Container(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ImageView(
+                                    imgUrl: image.src.landscape,
+                                  )));
+                    },
+                    child: Hero(
+                      tag: image.src.portrait,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          image.src.portrait,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            }).toList(),
           ),
         );
-      }).toList(),
-    ),
+      } else {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: GridView.count(
+            physics: ClampingScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            childAspectRatio: 0.6,
+            mainAxisSpacing: 3,
+            crossAxisSpacing: 6,
+            children: images.map((image) {
+              return GridTile(
+                child: Container(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ImageView(
+                                    imgUrl: image.src.portrait,
+                                  )));
+                    },
+                    child: Hero(
+                      tag: image.src.portrait,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          image.src.portrait,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        );
+      }
+    },
   );
 }
